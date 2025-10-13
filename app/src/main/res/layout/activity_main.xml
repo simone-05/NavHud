@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/root_layout"
+    android:fitsSystemWindows="false"
+    >
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        map:uiZoomControls="false"
+        map:mapType="normal"
+        />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/search_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="14dp"
+        app:boxBackgroundMode="filled"
+        app:boxCornerRadiusTopStart="50dp"
+        app:boxCornerRadiusTopEnd="50dp"
+        app:boxCornerRadiusBottomStart="50dp"
+        app:boxCornerRadiusBottomEnd="50dp"
+        app:boxBackgroundColor="@color/softAccent"
+        app:hintEnabled="false"
+        android:textColor="@color/text"
+        app:hintAnimationEnabled="false"
+        app:endIconTint="@color/hintText"
+        app:endIconMode="clear_text"
+        app:boxStrokeWidth="0dp"
+        app:boxStrokeWidthFocused="0dp"
+        >
+
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+            android:id="@+id/search_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="56dp"
+            android:hint="Search"
+            android:textColorHint="@color/hintText"
+            android:textColor="@color/text"
+            android:inputType="text"
+            android:imeOptions="actionSearch"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:scrollHorizontally="true"
+            android:drawableStart="@drawable/search_24px"
+            android:drawableTint="?attr/colorPrimary"
+            android:drawablePadding="8dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:completionThreshold="3"
+            android:dropDownVerticalOffset="6dp"
+            android:dropDownHeight="wrap_content"
+            android:dropDownWidth="match_parent"
+            android:popupBackground="@color/softAccent"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <include layout="@layout/marker_info_card"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/location_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="16dp"
+        android:contentDescription="Center on my location"
+        android:src="@drawable/my_location_24px"
+        app:backgroundTint="@color/softAccent"
+        app:tint="?attr/colorPrimary"
+        />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

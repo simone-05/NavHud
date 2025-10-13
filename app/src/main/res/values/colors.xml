@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#000</color>
+    <color name="colorAccent">#fff</color>
+    <color name="softAccent">#eee</color>
+    <color name="text">#222</color>
+    <color name="hintText">#555</color>
+
+    <color name="blue">#34d</color>
+    <color name="red">#cc3022</color>
+    <color name="green">#3a3</color>
+    <color name="darkGray">#333</color>
+    <color name="lightGray">#ccc</color>
+    <color name="black">#000</color>
+    <color name="white">#fff</color>
+
+    <!-- <color name="ic_launcher_background">#109</color> -->
+</resources>

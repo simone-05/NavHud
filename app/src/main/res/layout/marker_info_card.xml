@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/marker_info_card"
+    style="?attr/materialCardViewElevatedStyle"
+    android:layout_width="220dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|start"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentStart="true"
+    android:layout_margin="16dp"
+    android:visibility="gone"
+    app:cardBackgroundColor="@color/softAccent"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="14dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp">
+
+            <ImageButton
+                android:id="@+id/close_marker_info_card"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="0dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/close_24px"
+                android:contentDescription="Close"
+                android:tint="@color/black"
+                />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/marker_info_card_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="4dp"
+                android:text="m"
+                android:textSize="12sp"
+                android:textColor="#222"
+                />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/navigate_to_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/directions_24px"
+                android:contentDescription="Navigate here"
+                app:fabSize="mini"
+                app:backgroundTint="?attr/colorPrimary"
+                app:tint="@color/softAccent"
+                app:elevation="0dp"
+                app:pressedTranslationZ="0dp"
+                />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/marker_info_card_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Marker Location"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            />
+
+        <TextView
+            android:id="@+id/marker_info_card_body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="Latitude: 0.0\nLongitude: 0.0"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

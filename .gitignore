@@ -1,0 +1,11 @@
+.gradle/
+.kotlin/
+.vscode/
+/build/
+/app/build/
+
+local.properties
+
+logo*.png
+logcat.sh
+TODO.md
