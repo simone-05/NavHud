@@ -456,8 +456,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnCameraMoveStarte
         autocompletePlacesRequestBuilder.setSessionToken(placesSessionToken)
 
         if (::lastKnownLocation.isInitialized) {
-            val bounds = createBoundsFromCenter(lastKnownLocation, /* radius = */ 10000.0)
-            // val bounds: CircularBounds = CircularBounds.newInstance(lastKnownLocation, /* radius = */ 10000.0)
+            // val bounds = createBoundsFromCenter(lastKnownLocation, /* radius = */ 10000.0)
+            val bounds: CircularBounds = CircularBounds.newInstance(lastKnownLocation, /* radius = */ 10000.0)
             autocompletePlacesRequestBuilder
                 .setOrigin(lastKnownLocation)
                 .setLocationBias(bounds)
@@ -481,6 +481,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnCameraMoveStarte
 
     private fun get_place_details(placesPredictionsIndex: Int) {
         val selectedPlace: AutocompletePrediction = placesPredictions[placesPredictionsIndex]
+        // We get the details of the place
         val placeId = selectedPlace.getPlaceId()
         val placePrimaryName: String = selectedPlace.getPrimaryText(null).toString()
         // val placeTypes = selectedPlace.getTypes() //List<String>
@@ -491,10 +492,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnCameraMoveStarte
             String.format("%.3f km", it.toDouble() / 1000)
         }
 
+        // Then we need the coordinates of the place (a new api request) to be able to show the marker located on the map
         val placeFields = listOf(
-            Place.Field.LAT_LNG,
-            // Place.Field.DISPLAY_NAME,
-            // Place.Field.TYPES
+            // Place.Field.LAT_LNG,     //instead of LOCATION for places api <4.0
+            Place.Field.LOCATION,
         )
 
         val request = FetchPlaceRequest.newInstance(placeId, placeFields)
@@ -502,30 +503,36 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnCameraMoveStarte
         placesClient.fetchPlace(request)
             .addOnSuccessListener {
                 response ->
-                val fetchedPlace = response.place
+                // val fetchedPlace = response.place
+                val fetchedPlace = response.getPlace()
 
-                fetchedPlace.latLng?.let { latLng ->
-
-                    hideMarkerInfoCard()
-                    hideKeyboard()
-                    currentMarker?.remove()
-                    currentMarker = map.addMarker(
-                        MarkerOptions()
-                            .position(latLng)
-                            .draggable(false)
-                            .title(placePrimaryName)
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
-                            .visible(true)
-                    )
-                    currentMarker?.let {
-                        showMarkerInfoCard(it,
-                            placePrimaryName,
-                            placeTypes,
-                            placeDistance
-                        )
-                    }
-                    moveCameraToPoint(latLng)
+                // fetchedPlace.latLng?.let { coordinates ->
+                val coordinates: LatLng? = fetchedPlace.getLocation()
+                if (coordinates == null) {
+                    showToast("Can't get place location")
+                    return@addOnSuccessListener
                 }
+
+                hideMarkerInfoCard()
+                hideKeyboard()
+                currentMarker?.remove()
+                currentMarker = map.addMarker(
+                    MarkerOptions()
+                        .position(coordinates)
+                        .draggable(false)
+                        .title(placePrimaryName)
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+                        .visible(true)
+                )
+                currentMarker?.let {
+                    showMarkerInfoCard(it,
+                        placePrimaryName,
+                        placeTypes,
+                        placeDistance
+                    )
+                }
+                moveCameraToPoint(coordinates)
+                // }
             }
             .addOnFailureListener {
                 exception ->
@@ -544,8 +551,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnCameraMoveStarte
 
         val placeFields = listOf(
             Place.Field.ID,
-            Place.Field.LAT_LNG,
-            Place.Field.NAME,
+            // Place.Field.LAT_LNG,  //instead of LOCATION for places api <4.0
+            Place.Field.LOCATION,
+            // Place.Field.NAME,    //instead of DISPLAY_NAME for places api <4.0
+            Place.Field.DISPLAY_NAME,
             Place.Field.TYPES
         )
 
@@ -553,8 +562,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnCameraMoveStarte
             .setMaxResultCount(1)
 
         if (::lastKnownLocation.isInitialized) {
-            val bounds = createBoundsFromCenter(lastKnownLocation, /* radius = */ 10000.0)
-            // val bounds: CircularBounds = CircularBounds.newInstance(lastKnownLocation, /* radius = */ 10000.0)
+            // val bounds = createBoundsFromCenter(lastKnownLocation, /* radius = */ 10000.0)
+            val bounds: CircularBounds = CircularBounds.newInstance(lastKnownLocation, /* radius = */ 10000.0)
             searchByTextRequestBuilder.setLocationBias(bounds)
         }
         val request: SearchByTextRequest  = searchByTextRequestBuilder.build()
@@ -568,12 +577,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnCameraMoveStarte
                     return@addOnSuccessListener
                 }
                 val fetchedPlace: Place = places[0]
-                val position: LatLng? = fetchedPlace.latLng
-                if (position == null) {
+                // val coordinates: LatLng? = fetchedPlace.latLng
+                val coordinates: LatLng? = fetchedPlace.getLocation()
+                if (coordinates == null) {
                     showToast("Can't get place location")
                     return@addOnSuccessListener
                 }
-                val name: String = fetchedPlace.name?: ""
+                // val name: String = fetchedPlace.name?: ""
+                val name: String = fetchedPlace.getDisplayName()?: ""
                 val types: String = fetchedPlace.getPlaceTypes()
                     ?.take(2)
                     ?.joinToString(", ") { it.replace('_', ' ') }
@@ -584,7 +595,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnCameraMoveStarte
                 currentMarker?.remove()
                 currentMarker = map.addMarker(
                     MarkerOptions()
-                        .position(position)
+                        .position(coordinates)
                         .draggable(false)
                         .title(name)
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
@@ -596,7 +607,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnCameraMoveStarte
                         types
                     )
                 }
-                moveCameraToPoint(position)
+                moveCameraToPoint(coordinates)
             }
             .addOnFailureListener {
                 exception ->

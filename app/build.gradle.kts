@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.simonimal.navhud"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.simonimal.navhud"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
         resourceConfigurations += listOf("en")
@@ -71,10 +71,11 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
 
-    implementation("com.google.android.gms:play-services-location:21.0.1")
-    implementation("com.google.maps.android:android-maps-utils:2.3.0")
-    implementation("com.google.android.libraries.places:places:3.3.0")
-    implementation("com.google.android.libraries.navigation:navigation:6.0.0")
+    implementation("com.google.android.gms:play-services-maps:19.0.0")
+    implementation("com.google.android.gms:play-services-location:21.3.0")
+    implementation("com.google.maps.android:android-maps-utils:3.10.0")
+    implementation("com.google.android.libraries.places:places:4.0.0")
+    implementation("com.google.android.libraries.navigation:navigation:6.0.1")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 }

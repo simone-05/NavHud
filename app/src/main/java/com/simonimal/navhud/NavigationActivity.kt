@@ -168,7 +168,7 @@ class NavigationActivity : AppCompatActivity(), OnMapReadyCallback {
                         showToast("Error loading Navigation SDK: Location permission is missing.")
                     }
                     else -> {
-                        showToast("Error loading Navigation SDK: $errorCode")
+                        showToast("Error loading Navigation SDK: $errorCode", false)
                     }
                 }
             }
